@@ -5,8 +5,8 @@ import com.github.javafaker.DateAndTime;
 public class Booking {
 
     private Long id;
-    private String guestFullName;
-    private Long guestRoomNumber;
+    private Guest guest;
+    private Room room;
     private DateAndTime checkedIn;
     private DateAndTime checkedOut;
 }

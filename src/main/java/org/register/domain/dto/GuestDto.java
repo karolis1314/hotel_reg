@@ -7,5 +7,4 @@ public class GuestDto {
     private String firstName;
     private String lastName;
     private Long roomNumber;
-    private Long checkedIn;
 }
