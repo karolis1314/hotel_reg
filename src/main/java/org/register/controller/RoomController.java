@@ -1,2 +1,4 @@
-package org.register.controller;public class RoomController {
+package org.register.controller;
+
+public class RoomController {
 }

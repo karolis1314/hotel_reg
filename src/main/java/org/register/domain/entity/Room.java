@@ -1,2 +1,8 @@
-package org.register.domain.entity;public class Room {
+package org.register.domain.entity;
+
+public class Room {
+
+    private Long id;
+    private Boolean available;
+    private Guest guest;
 }
