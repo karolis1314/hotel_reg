@@ -3,8 +3,8 @@ package org.register.domain.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class Room {
 
+public class Room {
     private Long id;
     private Boolean available;
     private Guest guest;
