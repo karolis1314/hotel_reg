@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS hotel;
+CREATE DATABASE hotel;
 \c hotel;
 
 CREATE TABLE Guest (

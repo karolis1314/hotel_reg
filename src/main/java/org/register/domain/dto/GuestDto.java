@@ -16,6 +16,13 @@ public class GuestDto {
         this.roomNumber = roomNumber;
     }
 
+    public GuestDto(Long id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.roomNumber = 0L;
+    }
+
     public Long getId() {
         return id;
     }

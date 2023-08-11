@@ -12,19 +12,33 @@ import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.register.domain.dto.GuestDto;
+import org.register.service.impl.GuestService;
 
-import java.util.List;
 import java.util.Optional;
 
 @Path("/guest")
 public class GuestController {
 
+    private final GuestService guestService;
+
+    public GuestController() {
+        this.guestService = new GuestService();
+    }
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response getAllGuest() {
         return Response.status(Response.Status.OK)
-                .entity(Optional.empty())
+                .entity(guestService.getAllGuest())
+                .build();
+    }
+
+    @GET
+    @Path("/test")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getTests() {
+        return Response.status(Response.Status.OK)
+                .entity("Fuck of")
                 .build();
     }
 
