@@ -6,11 +6,11 @@ import java.sql.SQLException;
 
 public class JdbcPsqlConnection {
 
-    private final String url = "jdbc:postgresql://localhost/myDB";
-    private final String user = "postgres";
-    private final String password = "root";
+    private static final String url = "jdbc:postgresql://localhost/myDB";
+    private static final String user = "postgres";
+    private static final String password = "root";
 
-    public Connection connect() {
+    public static final Connection connect() {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url, user, password);
