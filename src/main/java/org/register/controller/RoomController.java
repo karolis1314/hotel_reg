@@ -32,7 +32,7 @@ public class RoomController {
     }
 
     @GET
-    @Path("/avalible")
+    @Path("/available")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getAvalibleRooms() {
         return Response.status(Response.Status.OK)

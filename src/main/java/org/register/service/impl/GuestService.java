@@ -1,6 +1,4 @@
 package org.register.service.impl;
-
-import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import org.register.domain.dto.GuestDto;
 import org.register.exception.ApplicationException;
@@ -37,6 +35,7 @@ public class GuestService {
             }
         } catch (SQLException e) {
             LOGGER.severe("Error retrieving guests: " + e.getMessage());
+            ApplicationException.internalServerError();
         }
 
         return guests;
@@ -58,6 +57,8 @@ public class GuestService {
             if (e.getMessage().contains("duplicate key value violates unique constraint")) {
                 ApplicationException.errorMessage(Response.Status.BAD_REQUEST,
                         "Error: Guest with the same name and surname already exists.");
+            } else {
+                ApplicationException.internalServerError();
             }
         }
     }

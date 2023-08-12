@@ -28,3 +28,10 @@ ALTER TABLE Guest ADD CONSTRAINT fr_name_plus_sr_name_unique UNIQUE (firstName, 
 CREATE INDEX idx_booking_guest_id ON Booking(guest_id);
 CREATE INDEX idx_booking_room_id ON Booking(room_id);
 CREATE INDEX idx_room_guest_id ON Room(guest_id);
+
+INSERT INTO Room(id, available, guest_id) VALUES
+    (1, false, null),
+    (2, false, null),
+    (3, false, null),
+    (4, false, null),
+    (5, false, null);

@@ -11,4 +11,8 @@ public class ApplicationException {
                 .entity(message)
                 .build());
     }
+
+    public static WebApplicationException internalServerError() {
+        ApplicationException.errorMessage(Response.Status.INTERNAL_SERVER_ERROR, "Internal Server Error");
+    }
 }
