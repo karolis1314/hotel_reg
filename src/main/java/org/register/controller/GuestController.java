@@ -14,8 +14,6 @@ import jakarta.ws.rs.core.Response;
 import org.register.domain.dto.GuestDto;
 import org.register.service.impl.GuestService;
 
-import java.util.Optional;
-
 @Path("/guest")
 public class GuestController {
 
@@ -30,15 +28,6 @@ public class GuestController {
     public Response getAllGuest() {
         return Response.status(Response.Status.OK)
                 .entity(guestService.getAllGuest())
-                .build();
-    }
-
-    @GET
-    @Path("/test")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response getTests() {
-        return Response.status(Response.Status.OK)
-                .entity("Fuck of")
                 .build();
     }
 

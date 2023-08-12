@@ -1,6 +1,9 @@
 package org.register.service.impl;
 
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 import org.register.domain.dto.GuestDto;
+import org.register.exception.ApplicationException;
 import org.register.mapper.GuestMapper;
 import org.register.service.database.JdbcPsqlConnection;
 
@@ -14,17 +17,17 @@ import java.util.logging.Logger;
 
 public class GuestService {
 
-    public GuestService(){}
+    public GuestService() {
+    }
 
     private static final Logger LOGGER = Logger.getLogger(GuestService.class.getName());
-
 
 
     public List<GuestDto> getAllGuest() {
         List<GuestDto> guests = new ArrayList<>();
         try (Connection connection = connectToDb()) {
             if (connection != null) {
-             var resultSet = getResultsFromQuery("SELECT * FROM Guest", connection);
+                var resultSet = getResultsFromQuery("SELECT * FROM Guest", connection);
                 while (resultSet.next()) {
                     guests.add(GuestMapper.fromResultSetToDto(
                             resultSet.getLong("id"),
@@ -52,6 +55,10 @@ public class GuestService {
             }
         } catch (SQLException e) {
             LOGGER.severe("Error creating guest: " + e.getMessage());
+            if (e.getMessage().contains("duplicate key value violates unique constraint")) {
+                ApplicationException.errorMessage(Response.Status.BAD_REQUEST,
+                        "Error: Guest with the same name and surname already exists.");
+            }
         }
     }
 

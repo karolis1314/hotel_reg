@@ -23,6 +23,7 @@ CREATE TABLE Booking (
 
 ALTER TABLE Booking ADD CONSTRAINT fk_guest FOREIGN KEY (guest_id) REFERENCES Guest(id);
 ALTER TABLE Booking ADD CONSTRAINT fk_room FOREIGN KEY (room_id) REFERENCES Room(id);
+ALTER TABLE Guest ADD CONSTRAINT fr_name_plus_sr_name_unique UNIQUE (firstName, lastName);
 
 CREATE INDEX idx_booking_guest_id ON Booking(guest_id);
 CREATE INDEX idx_booking_room_id ON Booking(room_id);
