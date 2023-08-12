@@ -26,7 +26,7 @@ public class GuestController {
     }
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getAllGuest() {
         return Response.status(Response.Status.OK)
                 .entity(guestService.getAllGuest())
