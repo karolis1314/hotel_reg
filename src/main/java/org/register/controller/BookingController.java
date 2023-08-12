@@ -11,7 +11,7 @@ public class BookingController {
 
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getAllBookings() {
         return Response.status(Response.Status.OK)
                 .build();

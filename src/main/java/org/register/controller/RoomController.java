@@ -15,7 +15,7 @@ import java.util.Optional;
 public class RoomController {
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getAllRooms() {
         return Response.status(Response.Status.OK)
                 .entity(Optional.empty())
@@ -24,7 +24,7 @@ public class RoomController {
 
     @GET
     @Path("/booked")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getBookedRooms() {
         return Response.status(Response.Status.OK)
                 .entity(Optional.empty())
@@ -33,7 +33,7 @@ public class RoomController {
 
     @GET
     @Path("/available")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getAvalibleRooms() {
         return Response.status(Response.Status.OK)
                 .entity(Optional.empty())

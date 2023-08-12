@@ -1,6 +1,7 @@
 package org.register.service.impl;
 
 import jakarta.ws.rs.core.Response;
+import org.register.Constants;
 import org.register.domain.dto.GuestDto;
 import org.register.exception.ApplicationException;
 import org.register.mapper.GuestMapper;
@@ -12,15 +13,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Locale;
+
+import static org.register.utils.ServiceUtils.*;
 
 public class GuestService {
 
-    private static final Logger LOGGER = Logger.getLogger(GuestService.class.getName());
-
     public List<GuestDto> getAllGuest() {
         List<GuestDto> guests = new ArrayList<>();
-        try (Connection connection = connectToDb();
+        try (Connection connection = JdbcPsqlConnection.connect();
              ResultSet resultSet = getResultsFromQuery("SELECT * FROM Guest", connection)) {
 
             while (resultSet.next()) {
@@ -30,14 +31,14 @@ public class GuestService {
                         resultSet.getString("lastName")));
             }
         } catch (SQLException e) {
-            handleError("retrieving guests", e);
+            handleError("Error retrieving guests: ", e);
         }
 
         return guests;
     }
 
     public void createGuest(GuestDto dto) {
-        try (Connection connection = connectToDb()) {
+        try (Connection connection = JdbcPsqlConnection.connect()) {
             if (connection != null) {
                 String insertQuery = "INSERT INTO Guest (firstName, lastName) VALUES (?, ?)";
                 try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
@@ -47,7 +48,7 @@ public class GuestService {
                 }
             }
         } catch (SQLException e) {
-            handleError("creating guest", e);
+            handleError("Error creating guest: ", e);
             if (e.getMessage().contains("duplicate key value violates unique constraint")) {
                 ApplicationException.errorMessage(Response.Status.BAD_REQUEST,
                         "Error: Guest with the same name and surname already exists.");
@@ -56,7 +57,7 @@ public class GuestService {
     }
 
     public void updateGuest(Long id, GuestDto dto) {
-        try (Connection connection = connectToDb()) {
+        try (Connection connection = JdbcPsqlConnection.connect()) {
             if (connection != null) {
                 if (hasGuestById(id)) {
                     String updateQuery = "UPDATE Guest SET firstName = ?, lastName = ? WHERE id = ?";
@@ -67,18 +68,19 @@ public class GuestService {
                         updateStatement.executeUpdate();
                     }
                 } else {
-                    LOGGER.warning("Guest with ID " + id + " not found.");
-                    ApplicationException.errorMessage(Response.Status.BAD_REQUEST, "No such guest was found.");
+                    logErrorToConsole(String.format(Locale.getDefault(), Constants.NO_GUEST_FOUND, id));
+                    ApplicationException.errorMessage(Response.Status.BAD_REQUEST,
+                            String.format(Locale.getDefault(), Constants.NO_GUEST_FOUND, id));
                 }
             }
         } catch (SQLException e) {
-            handleError("updating guest", e);
+            handleError("Error updating guest: ", e);
         }
     }
 
     public void deleteGuest(Long id) {
         if (hasGuestById(id)) {
-            try (Connection connection = connectToDb()) {
+            try (Connection connection = JdbcPsqlConnection.connect()) {
                 if (connection != null) {
                     String deleteQuery = "DELETE FROM Guest WHERE id = ?";
                     try (PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
@@ -87,16 +89,17 @@ public class GuestService {
                     }
                 }
             } catch (SQLException e) {
-                handleError("deleting guest", e);
+                handleError("Error deleting guest: ", e);
             }
         } else {
-            LOGGER.warning("Guest with ID " + id + " not found.");
-            ApplicationException.errorMessage(Response.Status.NOT_FOUND, "Guest not found.");
+            logErrorToConsole(String.format(Locale.getDefault(), Constants.NO_GUEST_FOUND, id));
+            ApplicationException.errorMessage(Response.Status.NOT_FOUND,
+                    String.format(Locale.getDefault(), Constants.NO_GUEST_FOUND, id));
         }
     }
 
     private boolean hasGuestById(Long id) {
-        try (Connection connection = connectToDb()) {
+        try (Connection connection = JdbcPsqlConnection.connect()) {
             if (connection != null) {
                 String query = "SELECT id FROM Guest WHERE id = ?";
                 try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -107,21 +110,8 @@ public class GuestService {
                 }
             }
         } catch (SQLException e) {
-            handleError("checking guest existence", e);
+            handleError("Error looking for guest: ", e);
         }
         return false;
-    }
-
-    private Connection connectToDb() {
-        return JdbcPsqlConnection.connect();
-    }
-
-    private ResultSet getResultsFromQuery(String query, Connection connection) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        return preparedStatement.executeQuery();
-    }
-
-    private void handleError(String operation, SQLException e) {
-        LOGGER.severe("Error " + operation + ": " + e.getMessage());
     }
 }
