@@ -43,7 +43,7 @@ public class GuestController {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateGuest(@PathParam("id") Long id, GuestDto dto) {
-
+        guestService.updateGuest(id, dto);
         return Response.status(Response.Status.ACCEPTED)
                 .build();
     }
@@ -51,7 +51,7 @@ public class GuestController {
     @DELETE
     @Path("{id}")
     public Response updateGuest(@PathParam("id") Long id) {
-
+        guestService.deleteGuest(id);
         return Response.status(Response.Status.ACCEPTED)
                 .build();
     }
