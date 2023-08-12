@@ -8,17 +8,25 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.register.service.impl.RoomService;
 
 import java.util.Optional;
 
 @Path("/room")
 public class RoomController {
 
+    private final RoomService roomService;
+
+    public RoomController() {
+        this.roomService = new RoomService();
+    }
+
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllRooms() {
         return Response.status(Response.Status.OK)
-                .entity(Optional.empty())
+                .entity(roomService.getAllRooms())
                 .build();
     }
 

@@ -15,6 +15,8 @@ public class Room {
         this.guest = guest;
     }
 
+    public Room(){}
+
     public Long getId() {
         return id;
     }

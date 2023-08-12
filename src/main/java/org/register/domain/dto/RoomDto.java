@@ -2,22 +2,22 @@ package org.register.domain.dto;
 
 public class RoomDto {
     private Long roomNumber;
-    private boolean avalible;
+    private boolean available;
 
-    public RoomDto(Long roomNumber, boolean avalible) {
+    public RoomDto(Long roomNumber, boolean available) {
         this.roomNumber = roomNumber;
-        this.avalible = avalible;
+        this.available = available;
     }
 
     public Long getRoomNumber() {
         return roomNumber;
     }
 
-    public boolean isAvalible() {
-        return avalible;
+    public boolean isAvailable() {
+        return available;
     }
 
-    public void setAvalible(boolean avalible) {
-        this.avalible = avalible;
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }
