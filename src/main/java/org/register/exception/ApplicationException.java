@@ -13,6 +13,8 @@ public class ApplicationException {
     }
 
     public static WebApplicationException internalServerError() {
-        ApplicationException.errorMessage(Response.Status.INTERNAL_SERVER_ERROR, "Internal Server Error");
+        throw new WebApplicationException(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity("Internal Server Error")
+                .build());
     }
 }
