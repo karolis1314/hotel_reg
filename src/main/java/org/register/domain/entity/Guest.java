@@ -7,13 +7,11 @@ public class Guest {
     private Long id;
     private String firstName;
     private String lastName;
-    private Booking booking;
 
-    public Guest(Long id, String firstName, String lastName, Booking booking) {
+    public Guest(Long id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.booking = booking;
     }
 
     public Long getId() {
@@ -34,14 +32,6 @@ public class Guest {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public Booking getBooking() {
-        return booking;
-    }
-
-    public void setBooking(Booking booking) {
-        this.booking = booking;
     }
 
     @Override

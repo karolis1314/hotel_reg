@@ -45,7 +45,7 @@ public class GuestController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerGuest(GuestDto dto) {
-
+        guestService.createGuest(dto);
         return Response.status(Response.Status.CREATED)
                 .build();
     }

@@ -7,20 +7,13 @@ public class GuestDto {
     private Long id;
     private String firstName;
     private String lastName;
-    private Long roomNumber;
 
-    public GuestDto(Long id, String firstName, String lastName, Long roomNumber) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.roomNumber = roomNumber;
+    public GuestDto() {
     }
-
     public GuestDto(Long id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.roomNumber = 0L;
     }
 
     public Long getId() {
@@ -47,11 +40,4 @@ public class GuestDto {
         this.lastName = lastName;
     }
 
-    public Long getRoomNumber() {
-        return roomNumber;
-    }
-
-    public void setRoomNumber(Long roomNumber) {
-        this.roomNumber = roomNumber;
-    }
 }
