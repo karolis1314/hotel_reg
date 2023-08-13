@@ -1,14 +1,20 @@
 package org.register.service.impl;
 
+import jakarta.ws.rs.core.Response;
 import org.register.Constants;
 import org.register.domain.dto.BookingDto;
 import org.register.domain.dto.GuestDto;
+import org.register.exception.ApplicationException;
 import org.register.mapper.BookingMapper;
 import org.register.service.database.JdbcPsqlConnection;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -22,6 +28,7 @@ public class BookingService {
 
     private final GuestService guestService;
     private final RoomService roomService;
+
     public BookingService() {
         this.guestService = new GuestService();
         this.roomService = new RoomService();
@@ -56,5 +63,24 @@ public class BookingService {
 
     public void createBooking(String firstName, String lastName) {
         GuestDto guestDto = guestService.getGuestByName(firstName, lastName);
+        var availableRoom = roomService.getAllAvailableRooms().stream().findAny();
+
+        if (availableRoom.isPresent()) {
+            try (Connection connection = JdbcPsqlConnection.connect()) {
+                if (connection != null) {
+                    String insertQuery = "INSERT INTO Booking (guest_id, room_id, checkedIn) VALUES (?, ?, ?)";
+                    try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                        insertStatement.setLong(1, guestDto.getId());
+                        insertStatement.setLong(2, availableRoom.get().getRoomNumber());
+                        insertStatement.setString(3, LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                        insertStatement.executeUpdate();
+                    }
+                }
+            } catch (SQLException e) {
+
+            }
+        } else {
+            ApplicationException.errorMessage(Response.Status.BAD_REQUEST, "We are fully booked");
+        }
     }
 }
