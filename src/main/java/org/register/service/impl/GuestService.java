@@ -31,7 +31,7 @@ public class GuestService {
                         resultSet.getString("lastName")));
             }
         } catch (SQLException e) {
-            handleError("Error retrieving guests: ", e);
+            handleError(String.format(Locale.getDefault(), Constants.ERROR_SQL_GUEST, "retrieving"), e);
         }
 
         return guests;
@@ -48,10 +48,10 @@ public class GuestService {
                 }
             }
         } catch (SQLException e) {
-            handleError("Error creating guest: ", e);
+            handleError(String.format(Locale.getDefault(), Constants.ERROR_SQL_GUEST, "creating"), e);
             if (e.getMessage().contains("duplicate key value violates unique constraint")) {
                 ApplicationException.errorMessage(Response.Status.BAD_REQUEST,
-                        "Error: Guest with the same name and surname already exists.");
+                        "Error: Guest with the same first name and last name already exists.");
             }
         }
     }
@@ -74,7 +74,7 @@ public class GuestService {
                 }
             }
         } catch (SQLException e) {
-            handleError("Error updating guest: ", e);
+            handleError(String.format(Locale.getDefault(), Constants.ERROR_SQL_GUEST, "updating"), e);
         }
     }
 
@@ -89,7 +89,7 @@ public class GuestService {
                     }
                 }
             } catch (SQLException e) {
-                handleError("Error deleting guest: ", e);
+                handleError(String.format(Locale.getDefault(), Constants.ERROR_SQL_GUEST, "deleting"), e);
             }
         } else {
             logErrorToConsole(String.format(Locale.getDefault(), Constants.NO_GUEST_FOUND, id));
@@ -110,7 +110,7 @@ public class GuestService {
                 }
             }
         } catch (SQLException e) {
-            handleError("Error looking for guest: ", e);
+            handleError(String.format(Locale.getDefault(), Constants.ERROR_SQL_GUEST, "finding"), e);
         }
         return false;
     }
