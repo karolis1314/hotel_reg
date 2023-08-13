@@ -5,13 +5,13 @@ public class BookingDto {
     private String guestsFirstName;
     private String guestsLastName;
     private Long roomNumber;
-    private boolean avalible;
+    private boolean available;
 
     public BookingDto(String guestsFirstName, String guestsLastName, Long roomNumber, boolean avalible) {
         this.guestsFirstName = guestsFirstName;
         this.guestsLastName = guestsLastName;
         this.roomNumber = roomNumber;
-        this.avalible = avalible;
+        this.available = avalible;
     }
 
     public String getGuestsFirstName() {
@@ -38,11 +38,11 @@ public class BookingDto {
         this.roomNumber = roomNumber;
     }
 
-    public boolean isAvalible() {
-        return avalible;
+    public boolean isAvailable() {
+        return available;
     }
 
-    public void setAvalible(boolean avalible) {
-        this.avalible = avalible;
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

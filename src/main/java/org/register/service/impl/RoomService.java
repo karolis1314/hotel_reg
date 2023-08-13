@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static org.register.utils.ServiceUtils.getResultsFromQuery;
 import static org.register.utils.ServiceUtils.handleError;
@@ -35,5 +37,17 @@ public class RoomService {
         }
 
         return rooms;
+    }
+
+    public List<RoomDto> getAllAvailableRooms() {
+        List<RoomDto> allRooms = getAllRooms();
+
+        return allRooms.stream().filter(RoomDto::isAvailable).collect(Collectors.toList());
+    }
+
+    public List<RoomDto> getAllBookedRooms() {
+        List<RoomDto> allRooms = getAllRooms();
+
+        return allRooms.stream().filter(Predicate.not(RoomDto::isAvailable)).collect(Collectors.toList());
     }
 }

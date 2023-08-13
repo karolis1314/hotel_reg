@@ -20,6 +20,8 @@ public class Booking {
         this.checkedOut = checkedOut;
     }
 
+    public Booking() {}
+
     public Long getId() {
         return id;
     }

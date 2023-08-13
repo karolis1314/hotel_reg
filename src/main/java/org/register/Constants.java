@@ -6,4 +6,5 @@ public class Constants {
 
     public static final String ERROR_SQL_GUEST = "Error %s guest: ";
     public static final String ERROR_SQL_ROOMS = "Error %s rooms: ";
+    public static final String ERROR_SQL_BOOKING = "Error %s booking: ";
 }

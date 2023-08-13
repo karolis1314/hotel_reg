@@ -6,6 +6,7 @@ import org.register.domain.dto.GuestDto;
 import org.register.exception.ApplicationException;
 import org.register.mapper.GuestMapper;
 import org.register.service.database.JdbcPsqlConnection;
+import org.register.utils.ServiceUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -98,20 +99,45 @@ public class GuestService {
         }
     }
 
-    private boolean hasGuestById(Long id) {
+    public GuestDto getGuestByName(String firstName, String lastName) {
+        GuestDto guestDto = null;
         try (Connection connection = JdbcPsqlConnection.connect()) {
-            if (connection != null) {
-                String query = "SELECT id FROM Guest WHERE id = ?";
-                try (PreparedStatement statement = connection.prepareStatement(query)) {
-                    statement.setLong(1, id);
-                    try (ResultSet resultSet = statement.executeQuery()) {
-                        return resultSet.next();
+            String query = "SELECT * FROM Guest WHERE firstName = ? AND lastName = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, firstName);
+                statement.setString(2, lastName);
+
+                try (ResultSet resultSet = ServiceUtils.getResultsFromQuery(statement.toString(), connection)) {
+                    if (resultSet.next()) {
+                        guestDto = GuestMapper.fromResultSetToDto(
+                                resultSet.getLong("id"),
+                                resultSet.getString("firstName"),
+                                resultSet.getString("lastName")
+                        );
                     }
                 }
             }
         } catch (SQLException e) {
-            handleError(String.format(Locale.getDefault(), Constants.ERROR_SQL_GUEST, "finding"), e);
+            handleError(String.format(Constants.ERROR_SQL_GUEST, "retrieving"), e);
         }
-        return false;
+
+        return guestDto;
     }
-}
+
+        private boolean hasGuestById (Long id){
+            try (Connection connection = JdbcPsqlConnection.connect()) {
+                if (connection != null) {
+                    String query = "SELECT id FROM Guest WHERE id = ?";
+                    try (PreparedStatement statement = connection.prepareStatement(query)) {
+                        statement.setLong(1, id);
+                        try (ResultSet resultSet = statement.executeQuery()) {
+                            return resultSet.next();
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                handleError(String.format(Locale.getDefault(), Constants.ERROR_SQL_GUEST, "finding"), e);
+            }
+            return false;
+        }
+    }

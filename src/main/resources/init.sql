@@ -9,14 +9,14 @@ CREATE TABLE Guest (
 
 CREATE TABLE Room (
     id SERIAL PRIMARY KEY,
-    available BOOLEAN NOT NULL,
+    available BOOLEAN NOT NULL DEFAULT TRUE,
     guest_id INT REFERENCES Guest(id)
 );
 
 CREATE TABLE Booking (
-    id SERIAL PRIMARY KEY,
-    guest_id INT REFERENCES Guest(id),
-    room_id INT REFERENCES Room(id),
+    id SERIAL PRIMARY KEY NOT NULL,
+    guest_id INT REFERENCES Guest(id) NOT NULL,
+    room_id INT REFERENCES Room(id) NOT NULL,
     checkedIn TIMESTAMP NOT NULL,
     checkedOut TIMESTAMP NOT NULL
 );
